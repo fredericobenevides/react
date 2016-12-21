@@ -1,19 +1,23 @@
 const TimersDashboard = React.createClass({
   getInitialState: function () {
     return {
-      timers: [],
+      timers: [
+        {
+          title: 'Practice squat',
+          project: 'Gym Chores',
+          id: uuid.v4(),
+          elapsed: 5456099,
+          runningSince: Date.now(),
+        },
+        {
+          title: 'Bake squash',
+          project: 'Kitchen Chores',
+          id: uuid.v4(),
+          elapsed: 1273998,
+          runningSince: null,
+        },
+      ],
     };
-  },
-
-  componentDidMount: function() {
-    this.loadTimersFromServer();
-    setInterval(this.loadTimersFromServer, 5000);
-  },
-
-  loadTimersFromServer: function() {
-    client.getTimers((serverTimers) => (
-      this.setState({ timers: serverTimers })
-    ));
   },
 
   handleCreateFormSubmit: function(timer) {
@@ -41,8 +45,6 @@ const TimersDashboard = React.createClass({
     this.setState({
       timers: this.state.timers.concat(t)
     });
-
-    client.createTimer(t);
   },
 
   updateTimer: function(attrs) {
@@ -58,18 +60,12 @@ const TimersDashboard = React.createClass({
         }
       }),
     });
-
-    client.updateTimer(attrs);
   },
 
   deleteTimer: function(timerId) {
     this.setState({
       timers: this.state.timers.filter(t => t.id !== timerId),
     });
-
-    client.deleteTimer(
-      { id: timerId }
-    );
   },
 
   startTimer: function (timerId) {
@@ -78,17 +74,13 @@ const TimersDashboard = React.createClass({
         timers: this.state.timers.map((timer) => {
         if (timer.id === timerId) {
           return Object.assign({}, timer, {
-            runningSince: now,
-          });
+          runningSince: now,
+        });
         } else {
           return timer;
         }
       }),
     });
-
-    client.startTimer(
-      { id: timerId, start: now }
-    );
   },
 
   stopTimer: function (timerId) {
@@ -107,10 +99,6 @@ const TimersDashboard = React.createClass({
         }
       }),
     });
-
-    client.stopTimer(
-      { id: timerId, stop: now }
-    );
   },
 
 
