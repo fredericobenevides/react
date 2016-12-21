@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "budo index.jsx -l -- -t [ babelify --presets [ react es2015 ] ]",
+    "start": "budo --host 127.0.0.1 index.jsx -l -- -t [ babelify --presets [ react es2015 ] ]",
     "go": "open http://192.168.2.13:9966/; npm run start",
     "test": "npm run run-e2e",
     "e2e": "nightwatch",
