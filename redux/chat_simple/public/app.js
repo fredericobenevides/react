@@ -59,3 +59,62 @@ const App = React.createClass({
   }
 
 });
+
+const MessageInput = React.createClass({
+  handleSubmit: function () {
+    store.dispatch({
+      type: 'ADD_MESSAGE',
+      message: this.refs.messageInput.value,
+  });
+    this.refs.messageInput.value = '';
+  },
+  render: function () {
+    return (
+      <div className='ui input'>
+        <input
+          ref='messageInput'
+          type='text'
+        >
+        </input>
+        <button
+          onClick={this.handleSubmit}
+          className='ui primary button'
+          type='submit'
+        >
+          Submit
+        </button>
+    </div>
+    );
+  },
+});
+
+const MessageView = React.createClass({
+  handleClick: function (index) {
+    store.dispatch({
+      type: 'DELETE_MESSAGE',
+      index: index,
+    });
+  },
+  render: function () {
+    const messages = this.props.messages.map((message, index) => (
+      <div
+        className='comment'
+        key={index}
+        onClick={() => this.handleClick(index)}
+      >
+        {message}
+      </div>
+    ));
+
+    return (
+      <div className='ui comments'>
+      {messages}
+    </div>
+    );
+  },
+});
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('content')
+);
